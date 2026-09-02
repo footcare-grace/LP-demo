@@ -87,6 +87,8 @@ header .btn{padding:10px 22px;font-size:13px}
   background:linear-gradient(180deg,var(--white) 0%,var(--blue-tint) 100%);
   color:var(--ink);padding:168px 0 100px;position:relative;overflow:hidden;
 }
+.hero-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:start}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px}}
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
   background:var(--red-soft);border:1px solid #ecc9c9;
@@ -96,16 +98,35 @@ header .btn{padding:10px 22px;font-size:13px}
 .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 h1.hero-title{
-  font-size:clamp(34px,5.6vw,58px);font-weight:800;line-height:1.4;
-  letter-spacing:.01em;margin-bottom:28px;max-width:760px;color:var(--ink);
+  font-size:clamp(30px,4.6vw,50px);font-weight:800;line-height:1.4;
+  letter-spacing:.01em;margin-bottom:28px;color:var(--ink);
 }
 h1.hero-title .accent{color:var(--blue)}
-.hero-sub{font-size:16px;color:var(--sub);max-width:560px;margin-bottom:44px;line-height:1.9}
+.hero-sub{font-size:16px;color:var(--sub);margin-bottom:44px;line-height:1.9}
 .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:64px}
 .hero-meta{display:flex;gap:32px;flex-wrap:wrap;font-size:13px;color:var(--sub)}
 .hero-meta div{display:flex;align-items:center;gap:8px}
 .hero-meta b{color:var(--ink);font-weight:700}
 .hero-meta .ico{font-size:15px}
+
+/* ヒーロー写真：フェードイン演出 */
+.hero-photo-wrap{
+  position:relative;border-radius:8px;overflow:hidden;
+  aspect-ratio:1170/2080;max-height:640px;
+  box-shadow:0 24px 60px -24px rgba(28,35,51,.28);
+  opacity:0;transform:translateY(18px) scale(.98);
+  transition:opacity 1.1s ease,transform 1.1s ease;
+}
+.hero-photo-wrap.loaded{opacity:1;transform:translateY(0) scale(1)}
+.hero-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-photo-caption{
+  position:absolute;left:0;right:0;bottom:0;padding:20px 22px 18px;
+  background:linear-gradient(0deg,rgba(21,27,40,.72) 0%,rgba(21,27,40,0) 100%);
+  color:#fff;font-size:12.5px;letter-spacing:.02em;
+}
+@media(prefers-reduced-motion: reduce){
+  .hero-photo-wrap{opacity:1;transform:none;transition:none}
+}
 
 /* 開催日程カード（シグネチャー要素） */
 .route{
@@ -339,32 +360,41 @@ footer .fname{color:#fff;font-weight:700;margin-bottom:8px;font-size:13px}
 <!-- ===== ヒーロー ===== -->
 <section class="hero">
   <div class="wrap">
-    <div class="hero-badge"><span class="dot"></span>次回開催 募集中／定員6名・先着順</div>
-    <h1 class="hero-title">関節痛で苦しむ人を、<br>一人でも多く<span class="accent">救える</span>ようになる。</h1>
-    <p class="hero-sub">解剖学に自信がなくても大丈夫。理学療法士歴17年・冨永琢也が体系化した、関節痛を根本から取り除く2日間の集中セミナー「Joint Breathing Method™」。</p>
-    <div class="hero-ctas">
-      <a href="#overview" class="btn btn-red apply-btn">セミナーに申し込む <span class="btn-arrow">→</span></a>
-      <a href="#method" class="btn btn-outline">セミナーの特徴を見る</a>
-    </div>
-    <div class="hero-meta">
-      <div><b>2日間</b>／座学2コマ・実技7コマ</div>
-      <div><b>定員6名</b>／2名1組バディー制</div>
-      <div><b>17年</b>／講師の臨床経験</div>
-    </div>
-
-    <div class="route">
-      <div class="route-label">次回開催日程（オール関節・完全版）</div>
-      <div class="date-cards">
-        <div class="date-card">
-          <span class="date-tag">直近開催</span>
-          <span class="date-main">2026年11月7日（土）・8日（日）</span>
+    <div class="hero-grid">
+      <div>
+        <div class="hero-badge"><span class="dot"></span>次回開催 募集中／定員6名・先着順</div>
+        <h1 class="hero-title">関節痛で苦しむ人を、<br>一人でも多く<span class="accent">救える</span>ようになる。</h1>
+        <p class="hero-sub">解剖学に自信がなくても大丈夫。理学療法士歴17年・冨永琢也が体系化した、関節痛を根本から取り除く2日間の集中セミナー「Joint Breathing Method™」。</p>
+        <div class="hero-ctas">
+          <a href="#overview" class="btn btn-red apply-btn">セミナーに申し込む <span class="btn-arrow">→</span></a>
+          <a href="#method" class="btn btn-outline">セミナーの特徴を見る</a>
         </div>
-        <div class="date-card">
-          <span class="date-tag">次回開催</span>
-          <span class="date-main">2027年2月13日（土）・14日（日）</span>
+        <div class="hero-meta">
+          <div><b>2日間</b>／座学2コマ・実技7コマ</div>
+          <div><b>定員6名</b>／2名1組バディー制</div>
+          <div><b>17年</b>／講師の臨床経験</div>
+        </div>
+
+        <div class="route">
+          <div class="route-label">次回開催日程（オール関節・完全版）</div>
+          <div class="date-cards">
+            <div class="date-card">
+              <span class="date-tag">直近開催</span>
+              <span class="date-main">2026年11月7日（土）・8日（日）</span>
+            </div>
+            <div class="date-card">
+              <span class="date-tag">次回開催</span>
+              <span class="date-main">2027年2月13日（土）・14日（日）</span>
+            </div>
+          </div>
+          <div class="venue-line">会場：東京都港区芝浦4-5-9 ハーバー芝浦301／その他の日程は下記の年間スケジュールをご覧ください</div>
         </div>
       </div>
-      <div class="venue-line">会場：東京都港区芝浦4-5-9 ハーバー芝浦301／その他の日程は下記の年間スケジュールをご覧ください</div>
+
+      <div class="hero-photo-wrap" id="hero-photo">
+        <img src="instructor-hero.png" alt="施術の様子（冨永琢也）" loading="eager">
+        <div class="hero-photo-caption">実際の施術風景｜講師・冨永琢也</div>
+      </div>
     </div>
   </div>
 </section>
@@ -662,7 +692,17 @@ faqList.querySelectorAll(".faq-item").forEach(item=>{
 });
 
 /* 初期化 */
+/* ヒーロー写真：ページ読み込み後、少し間を置いてフェードイン */
+function initHeroPhoto(){
+  const photo = document.getElementById("hero-photo");
+  if(!photo)return;
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{ photo.classList.add("loaded"); }, 250);
+  });
+}
+
 initRevealObserver();
+initHeroPhoto();
 </script>
 </body>
 </html>
