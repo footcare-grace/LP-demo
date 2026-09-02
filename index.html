@@ -64,6 +64,8 @@ h2.section-title{
 .btn-red{background:var(--red);color:#fff;box-shadow:0 6px 20px -8px rgba(194,59,59,.4)}
 .btn-red:hover{transform:translateY(-2px);box-shadow:0 10px 26px -8px rgba(194,59,59,.5)}
 .btn-outline{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn-outline.hero-outline{border-color:rgba(255,255,255,.55);color:#fff}
+.btn-outline.hero-outline:hover{border-color:#fff;color:#fff;background:rgba(255,255,255,.1)}
 .btn-outline:hover{border-color:var(--blue);color:var(--blue)}
 .btn-arrow{transition:transform .15s ease}
 .btn:hover .btn-arrow{transform:translateX(4px)}
@@ -82,63 +84,58 @@ header{
 .logo .tm{font-size:9px;vertical-align:super}
 header .btn{padding:10px 22px;font-size:13px}
 
-/* ===== ヒーロー：日程・会場の告知 ===== */
+/* ===== ヒーロー：写真を背景に、テキストをオーバーレイ ===== */
 .hero{
-  background:linear-gradient(180deg,var(--white) 0%,var(--blue-tint) 100%);
-  color:var(--ink);padding:150px 0 0;position:relative;overflow:hidden;
+  position:relative;overflow:hidden;color:#fff;
+  min-height:min(88vh, 760px);
+  display:flex;align-items:flex-end;
+  padding:150px 0 72px;
 }
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--red-soft);border:1px solid #ecc9c9;
-  color:var(--red);font-size:12.5px;font-weight:700;padding:7px 16px;
-  border-radius:999px;margin-bottom:28px;letter-spacing:.03em;
+.hero-photo-bg{
+  position:absolute;inset:0;z-index:0;
+  opacity:0;transition:opacity 1.3s ease;
 }
-.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-h1.hero-title{
-  font-size:clamp(30px,4.6vw,50px);font-weight:800;line-height:1.4;
-  letter-spacing:.01em;margin-bottom:28px;color:var(--ink);
-}
-h1.hero-title .accent{color:var(--blue)}
-.hero-sub{font-size:16px;color:var(--sub);margin-bottom:44px;line-height:1.9;max-width:640px}
-.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:56px}
-.hero-meta{display:flex;gap:32px;flex-wrap:wrap;font-size:13px;color:var(--sub);margin-bottom:56px}
-.hero-meta div{display:flex;align-items:center;gap:8px}
-.hero-meta b{color:var(--ink);font-weight:700}
-.hero-meta .ico{font-size:15px}
-
-/* ヒーロー写真：横幅いっぱいの帯（バナー）表示。顔・上半身を中心にトリミング */
-.hero-photo-wrap{
-  position:relative;width:100%;
-  height:clamp(220px, 38vw, 420px);
-  opacity:0;transform:translateY(18px);
-  transition:opacity 1.3s ease,transform 1.3s ease;
-}
-.hero-photo-wrap.loaded{opacity:1;transform:translateY(0)}
-.hero-photo-wrap img{
+.hero-photo-bg.loaded{opacity:1}
+.hero-photo-bg img{
   width:100%;height:100%;object-fit:cover;display:block;
   object-position:center 46%; /* 実測済み：顔全体がバランスよく収まる位置 */
 }
-/* 上端：ヒーロー背景（薄い水色）へ溶け込ませる */
-.hero-photo-wrap::before{
-  content:"";position:absolute;left:0;right:0;top:0;height:22%;
-  background:linear-gradient(to bottom, var(--blue-tint) 0%, rgba(232,236,247,0) 100%);
-  pointer-events:none;
+/* 可読性確保のためのスクリム（左下が濃く、右上が薄い） */
+.hero-photo-bg::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(75deg, rgba(15,19,28,.86) 0%, rgba(15,19,28,.62) 38%, rgba(15,19,28,.18) 68%, rgba(15,19,28,.05) 100%),
+    linear-gradient(0deg, rgba(15,19,28,.55) 0%, rgba(15,19,28,0) 34%);
 }
-/* 下端：次のセクション（白背景）へ溶け込ませる */
-.hero-photo-wrap::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:26%;
-  background:linear-gradient(to top, var(--paper) 0%, rgba(255,255,255,0) 100%);
-  pointer-events:none;
-}
+.hero-content{position:relative;z-index:1;width:100%}
 .hero-photo-caption{
-  position:absolute;right:20px;bottom:10px;z-index:3;
-  color:rgba(255,255,255,.92);font-size:11.5px;letter-spacing:.02em;
-  text-shadow:0 1px 6px rgba(21,27,40,.5);
+  position:absolute;z-index:1;right:24px;bottom:16px;
+  color:rgba(255,255,255,.75);font-size:11.5px;letter-spacing:.02em;
 }
 @media(prefers-reduced-motion: reduce){
-  .hero-photo-wrap{opacity:1;transform:none;transition:none}
+  .hero-photo-bg{opacity:1;transition:none}
 }
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(194,59,59,.22);border:1px solid rgba(255,150,150,.4);
+  color:#ffb0b0;font-size:12.5px;font-weight:700;padding:7px 16px;
+  border-radius:999px;margin-bottom:28px;letter-spacing:.03em;
+}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:#ff8a8a;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1.hero-title{
+  font-size:clamp(30px,4.6vw,50px);font-weight:800;line-height:1.4;
+  letter-spacing:.01em;margin-bottom:28px;color:#fff;
+  text-shadow:0 2px 20px rgba(0,0,0,.25);
+}
+h1.hero-title .accent{color:#8fa8e8}
+.hero-sub{font-size:16px;color:rgba(255,255,255,.86);margin-bottom:44px;line-height:1.9;max-width:600px}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:48px}
+.hero-meta{display:flex;gap:32px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.78);margin-bottom:0}
+.hero-meta div{display:flex;align-items:center;gap:8px}
+.hero-meta b{color:#fff;font-weight:700}
+.hero-meta .ico{font-size:15px}
 
 /* 開催日程カード（シグネチャー要素） */
 .route{
@@ -371,13 +368,18 @@ footer .fname{color:#fff;font-weight:700;margin-bottom:8px;font-size:13px}
 
 <!-- ===== ヒーロー ===== -->
 <section class="hero">
-  <div class="wrap">
+  <div class="hero-photo-bg" id="hero-photo">
+    <img src="instructor-hero.png" alt="施術の様子（冨永琢也）" loading="eager">
+  </div>
+  <div class="hero-photo-caption">実際の施術風景｜講師・冨永琢也</div>
+
+  <div class="wrap hero-content">
     <div class="hero-badge"><span class="dot"></span>次回開催 募集中／定員6名・先着順</div>
     <h1 class="hero-title">関節痛で苦しむ人を、<br>一人でも多く<span class="accent">救える</span>ようになる。</h1>
     <p class="hero-sub">解剖学に自信がなくても大丈夫。理学療法士歴17年・冨永琢也が体系化した、関節痛を根本から取り除く2日間の集中セミナー「Joint Breathing Method™」。</p>
     <div class="hero-ctas">
       <a href="#overview" class="btn btn-red apply-btn">セミナーに申し込む <span class="btn-arrow">→</span></a>
-      <a href="#method" class="btn btn-outline">セミナーの特徴を見る</a>
+      <a href="#method" class="btn btn-outline hero-outline">セミナーの特徴を見る</a>
     </div>
     <div class="hero-meta">
       <div><b>2日間</b>／座学2コマ・実技7コマ</div>
@@ -399,11 +401,6 @@ footer .fname{color:#fff;font-weight:700;margin-bottom:8px;font-size:13px}
       </div>
       <div class="venue-line">会場：東京都港区芝浦4-5-9 ハーバー芝浦301／その他の日程は下記の年間スケジュールをご覧ください</div>
     </div>
-  </div>
-
-  <div class="hero-photo-wrap" id="hero-photo">
-    <img src="instructor-hero.png" alt="施術の様子（冨永琢也）" loading="eager">
-    <div class="hero-photo-caption">実際の施術風景｜講師・冨永琢也</div>
   </div>
 </section>
 
