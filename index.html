@@ -84,9 +84,10 @@ header{
 .logo .tm{font-size:9px;vertical-align:super}
 header .btn{padding:10px 22px;font-size:13px}
 
-/* ===== ヒーロー：写真を背景に、テキストをオーバーレイ ===== */
+/* ===== ヒーロー：写真を右側に固定幅で配置、左は背景色（超ワイド画面でも破綻しない構成） ===== */
 .hero{
   position:relative;overflow:hidden;color:#fff;
+  background:linear-gradient(100deg, var(--ink) 0%, var(--ink) 42%, #2a3244 100%);
   min-height:min(78vh, 640px);
   display:flex;align-items:flex-end;
   padding:150px 0 72px;
@@ -95,24 +96,36 @@ header .btn{padding:10px 22px;font-size:13px}
   .hero{min-height:62vh;padding:130px 0 48px}
 }
 .hero-photo-bg{
-  position:absolute;inset:0;z-index:0;
+  position:absolute;top:0;right:0;bottom:0;
+  width:min(58%, 900px); /* 画面幅に関わらず、写真の表示幅に上限を設ける */
+  z-index:0;
   opacity:0;transition:opacity 1.3s ease;
+}
+@media(max-width:600px){
+  .hero-photo-bg{width:100%;left:0} /* モバイルは今まで通り画面幅いっぱい */
 }
 .hero-photo-bg.loaded{opacity:1}
 .hero-photo-bg img{
   width:100%;height:100%;object-fit:cover;display:block;
   object-position:center 51.5%; /* 余白追加済み画像・実測済みの位置 */
 }
-/* 可読性確保のためのスクリム（左下が濃く、右上が薄い） */
+/* 写真の左端を、背景色へ溶け込ませる */
+.hero-photo-bg::before{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:30%;
+  background:linear-gradient(to right, var(--ink) 0%, rgba(21,27,40,0) 100%);
+  z-index:1;pointer-events:none;
+}
+@media(max-width:600px){
+  .hero-photo-bg::before{width:0}
+}
+/* 可読性確保のためのスクリム（下側が濃く、上側が薄い） */
 .hero-photo-bg::after{
   content:"";position:absolute;inset:0;
-  background:
-    linear-gradient(75deg, rgba(15,19,28,.86) 0%, rgba(15,19,28,.62) 38%, rgba(15,19,28,.18) 68%, rgba(15,19,28,.05) 100%),
-    linear-gradient(0deg, rgba(15,19,28,.55) 0%, rgba(15,19,28,0) 34%);
+  background:linear-gradient(0deg, rgba(15,19,28,.55) 0%, rgba(15,19,28,0) 34%);
 }
 .hero-content{position:relative;z-index:1;width:100%}
 .hero-photo-caption{
-  position:absolute;z-index:1;right:24px;bottom:16px;
+  position:absolute;z-index:2;right:24px;bottom:16px;
   color:rgba(255,255,255,.75);font-size:11.5px;letter-spacing:.02em;
 }
 @media(prefers-reduced-motion: reduce){
