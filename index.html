@@ -87,9 +87,12 @@ header .btn{padding:10px 22px;font-size:13px}
 /* ===== ヒーロー：写真を背景に、テキストをオーバーレイ ===== */
 .hero{
   position:relative;overflow:hidden;color:#fff;
-  min-height:min(88vh, 760px);
+  min-height:min(78vh, 640px);
   display:flex;align-items:flex-end;
   padding:150px 0 72px;
+}
+@media(max-width:600px){
+  .hero{min-height:62vh;padding:130px 0 48px}
 }
 .hero-photo-bg{
   position:absolute;inset:0;z-index:0;
@@ -98,7 +101,7 @@ header .btn{padding:10px 22px;font-size:13px}
 .hero-photo-bg.loaded{opacity:1}
 .hero-photo-bg img{
   width:100%;height:100%;object-fit:cover;display:block;
-  object-position:center 46%; /* 実測済み：顔全体がバランスよく収まる位置 */
+  object-position:center 51.5%; /* 余白追加済み画像・実測済みの位置 */
 }
 /* 可読性確保のためのスクリム（左下が濃く、右上が薄い） */
 .hero-photo-bg::after{
