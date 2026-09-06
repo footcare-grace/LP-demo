@@ -350,20 +350,23 @@
   .video-band{
     background:var(--paper-2);
   }
-  .video-band .inner{
-    display:grid;grid-template-columns:.92fr 1.08fr;gap:44px;align-items:center;
-  }
+  .video-band .head{max-width:640px;margin:0 auto 36px;text-align:center;}
   .video-band .ic-badge{
     display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.1em;
     color:var(--blue-600);background:var(--blue-100);border:1px solid var(--line-blue);
     padding:7px 16px;border-radius:999px;margin-bottom:20px;
   }
   .video-band h2{color:var(--navy-900);font-size:clamp(22px,3.4vw,30px);margin-bottom:14px;}
-  .video-band p{color:var(--ink-soft);font-size:15px;margin-bottom:26px;}
+  .video-band p{color:var(--ink-soft);font-size:15px;margin-bottom:0;}
+  .video-band .head .btn{margin-top:26px;}
+  .video-gallery{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+    max-width:620px;margin:0 auto;
+  }
   .video-card{
     position:relative;border-radius:var(--radius);overflow:hidden;
     box-shadow:var(--shadow);border:1px solid var(--line);
-    width:100%;aspect-ratio:9/16;max-width:300px;margin:0 auto;background:var(--navy-950);
+    width:100%;aspect-ratio:3/4;background:var(--navy-950);
   }
   .video-card img, .video-card video{
     position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
@@ -371,16 +374,15 @@
   }
   .video-card .video-tint{
     position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(10,26,48,0) 60%, rgba(9,20,38,.55) 100%);
+    background:linear-gradient(180deg, rgba(10,26,48,0) 58%, rgba(9,20,38,.6) 100%);
     pointer-events:none;
   }
   .video-card .video-tag{
-    position:absolute;top:14px;left:14px;z-index:2;
-    display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;
-    color:#fff;background:rgba(10,26,48,.55);border:1px solid rgba(255,255,255,.3);
-    padding:5px 11px;border-radius:999px;backdrop-filter:blur(3px);
+    position:absolute;bottom:12px;left:12px;right:12px;z-index:2;
+    display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.04em;
+    color:#fff;
   }
-  .video-card .video-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--red-600);}
+  .video-card .video-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--red-600);flex:none;}
 
   /* ---------- final cta ---------- */
   .final-cta{
@@ -395,10 +397,8 @@
   footer .fbrand{font-family:var(--serif);color:var(--ink);font-weight:700;margin-bottom:8px;font-size:14px;}
 
   @media (max-width:760px){
-    .persona-grid,.ba-grid,.benefit-strip,.curr-grid,.voice-grid,.video-band .inner{grid-template-columns:1fr;}
-    .video-band .inner{text-align:center;}
-    .video-band .inner .text-col{order:2;}
-    .video-band .inner .video-card{order:1;margin-bottom:8px;}
+    .persona-grid,.ba-grid,.benefit-strip,.curr-grid,.voice-grid{grid-template-columns:1fr;}
+    .video-gallery{max-width:360px;}
     .ba-arrow{transform:rotate(90deg);margin:0;}
     .feature{grid-template-columns:48px 1fr;padding:22px 20px;}
     .feature .num{width:44px;height:44px;font-size:19px;}
@@ -590,17 +590,24 @@
 
 <!-- ============ セミナー実写バンド ============ -->
 <section class="video-band reveal">
-  <div class="wrap inner">
-    <div class="text-col">
+  <div class="wrap">
+    <div class="head">
       <span class="ic-badge">🎥 会場の様子</span>
       <h2>会場の空気ごと、体験してください</h2>
-      <p>少人数バディー制だからこそ生まれる、手技の"感覚"の共有。実際に登壇する冨永講師の様子をご覧いただけます。当日は、この距離感でお一人おひとりに向き合います。</p>
+      <p>少人数バディー制だからこそ生まれる、手技の"感覚"の共有。実際に登壇・指導する冨永講師の様子をご覧いただけます。当日は、この距離感でお一人おひとりに向き合います。</p>
       <a href="#overview" class="btn btn-cta cta-link">開催概要を見る →</a>
     </div>
-    <div class="video-card">
-      <video autoplay loop muted playsinline poster="assets/venue-poster.jpg"><source src="assets/venue.mp4" type="video/mp4"></video>
-      <div class="video-tint" aria-hidden="true"></div>
-      <span class="video-tag"><span class="dot"></span>冨永講師（実演風景）</span>
+    <div class="video-gallery">
+      <div class="video-card">
+        <video autoplay loop muted playsinline poster="assets/gallery-lecture-poster.jpg"><source src="assets/gallery-lecture.mp4" type="video/mp4"></video>
+        <div class="video-tint" aria-hidden="true"></div>
+        <span class="video-tag"><span class="dot"></span>座学講義の様子</span>
+      </div>
+      <div class="video-card">
+        <video autoplay loop muted playsinline poster="assets/gallery-treatment-poster.jpg"><source src="assets/gallery-treatment.mp4" type="video/mp4"></video>
+        <div class="video-tint" aria-hidden="true"></div>
+        <span class="video-tag"><span class="dot"></span>実技指導の様子</span>
+      </div>
     </div>
   </div>
 </section>
