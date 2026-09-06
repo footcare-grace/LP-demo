@@ -51,6 +51,10 @@
   /* ---------- reveal-on-scroll ---------- */
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease;}
   .reveal.in{opacity:1;transform:translateY(0);}
+  .video-gallery .stagger:nth-child(1){transition-delay:0s;}
+  .video-gallery .stagger:nth-child(2){transition-delay:.18s;}
+  .video-gallery .stagger:nth-child(3){transition-delay:.36s;}
+  .video-gallery .stagger:nth-child(4){transition-delay:.54s;}
   @media (prefers-reduced-motion: reduce){
     .reveal{opacity:1;transform:none;transition:none;}
     html{scroll-behavior:auto;}
@@ -598,12 +602,12 @@
       <a href="#overview" class="btn btn-cta cta-link">開催概要を見る →</a>
     </div>
     <div class="video-gallery">
-      <div class="video-card">
+      <div class="video-card reveal stagger">
         <video autoplay loop muted playsinline poster="assets/gallery-lecture-poster.jpg"><source src="assets/gallery-lecture.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
         <span class="video-tag"><span class="dot"></span>座学講義の様子</span>
       </div>
-      <div class="video-card">
+      <div class="video-card reveal stagger">
         <video autoplay loop muted playsinline poster="assets/gallery-treatment-poster.jpg"><source src="assets/gallery-treatment.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
         <span class="video-tag"><span class="dot"></span>実技指導の様子</span>
