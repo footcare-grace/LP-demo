@@ -84,11 +84,29 @@
   .btn-cta{
     background:linear-gradient(135deg,var(--red-600),var(--red-700));
     color:#fff;box-shadow:0 10px 26px -10px rgba(209,38,63,.65);
+    position:relative;overflow:hidden;isolation:isolate;
   }
+  .btn-cta::before{
+    content:"";position:absolute;inset:0;z-index:0;
+    background:linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.4) 50%, rgba(255,255,255,0) 70%);
+    transform:translateX(-130%);transition:transform .55s ease;
+  }
+  .btn-cta:hover::before{transform:translateX(130%);}
+  .btn-cta span, .btn-cta{z-index:1;}
   .btn-cta:hover{filter:brightness(1.06);box-shadow:0 14px 30px -10px rgba(209,38,63,.75);}
   .btn-sm{padding:9px 20px;font-size:13px;}
   .btn-ghost{
     background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.28);
+  }
+  .float-cta{
+    position:fixed;right:20px;bottom:20px;z-index:70;
+    box-shadow:0 14px 32px -10px rgba(209,38,63,.6);
+    opacity:0;transform:translateY(14px) scale(.96);pointer-events:none;
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .float-cta.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+  @media (max-width:520px){
+    .float-cta{right:14px;bottom:14px;padding:12px 20px;font-size:13px;}
   }
 
   /* ---------- hero ---------- */
@@ -177,6 +195,11 @@
   .persona-grid{
     display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px;
   }
+  /* ---------- 写真コラージュ風・交互スライド出現 ---------- */
+  .reveal-x{opacity:0;transform:translate(-26px,14px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal-x:nth-child(even){transform:translate(26px,14px);}
+  .reveal-x.in{opacity:1;transform:translate(0,0);}
+
   .persona{
     background:var(--card);border:1px solid var(--line);border-radius:14px;
     padding:20px 20px;display:flex;gap:12px;align-items:flex-start;
@@ -448,6 +471,9 @@
   </div>
 </div>
 
+<!-- ============ 追従CTA ============ -->
+<a href="#overview" class="btn btn-cta float-cta cta-link" id="floatCta">開催概要へ →</a>
+
 <!-- ============ HERO ============ -->
 <header class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
@@ -493,12 +519,12 @@
       <p class="section-desc">一つでも当てはまれば、このセミナーはあなたのためのものです。</p>
     </div>
     <div class="persona-grid">
-      <div class="persona"><span class="ic">🥋</span><p>新たな治療の武器を手に入れたい</p></div>
-      <div class="persona"><span class="ic">💪</span><p>筋肉へのアプローチはできるが、関節へのアプローチが苦手</p></div>
-      <div class="persona"><span class="ic">📚</span><p>解剖学に自信がない</p></div>
-      <div class="persona"><span class="ic">👨‍👩‍👧</span><p>家族の関節の痛みをとってあげたい</p></div>
-      <div class="persona"><span class="ic">🎯</span><p>客層を広げたい</p></div>
-      <div class="persona"><span class="ic">🔁</span><p>リピーターを増やしたい</p></div>
+      <div class="persona reveal reveal-x"><span class="ic">🥋</span><p>新たな治療の武器を手に入れたい</p></div>
+      <div class="persona reveal reveal-x"><span class="ic">💪</span><p>筋肉へのアプローチはできるが、関節へのアプローチが苦手</p></div>
+      <div class="persona reveal reveal-x"><span class="ic">📚</span><p>解剖学に自信がない</p></div>
+      <div class="persona reveal reveal-x"><span class="ic">👨‍👩‍👧</span><p>家族の関節の痛みをとってあげたい</p></div>
+      <div class="persona reveal reveal-x"><span class="ic">🎯</span><p>客層を広げたい</p></div>
+      <div class="persona reveal reveal-x"><span class="ic">🔁</span><p>リピーターを増やしたい</p></div>
     </div>
   </div>
 </section>
@@ -679,10 +705,10 @@
       <h2 class="section-title">受講生の声</h2>
     </div>
     <div class="voice-grid">
-      <div class="voice"><span class="quote-mark">"</span><p class="msg">セラピスト人生が変わった！</p><div class="who">🏥 整骨院勤務</div></div>
-      <div class="voice"><span class="quote-mark">"</span><p class="msg">リピートがかなり増えた！</p><div class="who">💈 整体院オーナー</div></div>
-      <div class="voice"><span class="quote-mark">"</span><p class="msg">早めに習っておいて本当によかった！</p><div class="who">🪡 鍼灸院勤務</div></div>
-      <div class="voice"><span class="quote-mark">"</span><p class="msg">過去イチレベルの良いセミナー！</p><div class="who">🏥 整骨院オーナー</div></div>
+      <div class="voice reveal reveal-x"><span class="quote-mark">"</span><p class="msg">セラピスト人生が変わった！</p><div class="who">🏥 整骨院勤務</div></div>
+      <div class="voice reveal reveal-x"><span class="quote-mark">"</span><p class="msg">リピートがかなり増えた！</p><div class="who">💈 整体院オーナー</div></div>
+      <div class="voice reveal reveal-x"><span class="quote-mark">"</span><p class="msg">早めに習っておいて本当によかった！</p><div class="who">🪡 鍼灸院勤務</div></div>
+      <div class="voice reveal reveal-x"><span class="quote-mark">"</span><p class="msg">過去イチレベルの良いセミナー！</p><div class="who">🏥 整骨院オーナー</div></div>
     </div>
   </div>
 </section>
@@ -851,6 +877,16 @@
     });
   }, {threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // ---- 追従CTAボタン：ヒーローを過ぎたら表示 ----
+  var floatCta = document.getElementById('floatCta');
+  var heroEl = document.querySelector('.hero');
+  if (floatCta && heroEl) {
+    var heroObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ floatCta.classList.toggle('show', !e.isIntersecting); });
+    }, {threshold:0});
+    heroObs.observe(heroEl);
+  }
 
   // ---- ギャラリー：スクロール連動で1枚ずつ切り替え ----
   var scroller = document.querySelector('.gallery-scroller');
