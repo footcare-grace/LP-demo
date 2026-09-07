@@ -196,9 +196,8 @@
     display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px;
   }
   /* ---------- 写真コラージュ風・交互スライド出現 ---------- */
-  .reveal-x{opacity:0;transform:translate(-26px,14px);transition:opacity .7s ease, transform .7s ease;}
-  .reveal-x:nth-child(even){transform:translate(26px,14px);}
-  .reveal-x.in{opacity:1;transform:translate(0,0);}
+  .reveal-x{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal-x.in{opacity:1;transform:translateY(0);}
 
   .persona{
     background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -395,8 +394,10 @@
   .gcard.active{opacity:1;pointer-events:auto;z-index:2;}
   .gcard img, .gcard video{
     position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-    filter:saturate(.92) contrast(1.03) brightness(.94);
+    filter:saturate(.9) contrast(1.03) brightness(.92);
+    transform:scale(1.08);transition:transform 8s ease-out;
   }
+  .gcard.active img, .gcard.active video{transform:scale(1);}
   .gcard .video-tint{
     position:absolute;inset:0;
     background:linear-gradient(180deg, rgba(9,20,38,.05) 0%, rgba(9,20,38,.28) 55%, rgba(9,20,38,.84) 100%);
@@ -448,7 +449,7 @@
 
   @media (max-width:760px){
     .persona-grid,.ba-grid,.benefit-strip,.curr-grid,.voice-grid{grid-template-columns:1fr;}
-    .gallery-scroller{height:calc(100vh + 5*55vh);}
+    .gallery-scroller{height:calc(100vh + 5*68vh);}
     .gcard .video-tag{bottom:44px;}
     .ba-arrow{transform:rotate(90deg);margin:0;}
     .feature{grid-template-columns:48px 1fr;padding:22px 20px;}
@@ -657,34 +658,27 @@
       <div class="gcard active" data-index="0">
         <video autoplay loop muted playsinline poster="assets/gallery-lecture-poster.jpg"><source src="assets/gallery-lecture.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
-        <span class="video-tag"><span class="dot"></span><span class="cap-title">座学講義の様子</span></span>
       </div>
       <div class="gcard" data-index="1">
         <video autoplay loop muted playsinline poster="assets/gallery-treatment-poster.jpg"><source src="assets/gallery-treatment.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
-        <span class="video-tag"><span class="dot"></span><span class="cap-title">実技指導の様子</span></span>
       </div>
       <div class="gcard" data-index="2">
         <video autoplay loop muted playsinline poster="assets/gallery-closeup-poster.jpg"><source src="assets/gallery-closeup.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
-        <span class="video-tag"><span class="dot"></span><span class="cap-title">手技のクローズアップ</span></span>
       </div>
       <div class="gcard" data-index="3">
         <video autoplay loop muted playsinline poster="assets/gallery-crowd-poster.jpg"><source src="assets/gallery-crowd.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
-        <span class="video-tag"><span class="dot"></span><span class="cap-title">受講者に囲まれて</span></span>
       </div>
       <div class="gcard" data-index="4">
         <video autoplay loop muted playsinline poster="assets/gallery-oneonone-poster.jpg"><source src="assets/gallery-oneonone.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
-        <span class="video-tag"><span class="dot"></span><span class="cap-title">マンツーマン指導</span></span>
       </div>
       <div class="gcard" data-index="5">
         <video autoplay loop muted playsinline poster="assets/gallery-lecture2-poster.jpg"><source src="assets/gallery-lecture2.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
-        <span class="video-tag"><span class="dot"></span><span class="cap-title">座学講義（別アングル）</span></span>
       </div>
-      <p class="gallery-hint">Scroll</p>
       <div class="gallery-progress">
         <span class="pdot active" data-index="0"></span>
         <span class="pdot" data-index="1"></span>
@@ -893,7 +887,15 @@
   if (scroller) {
     var gcards = Array.prototype.slice.call(scroller.querySelectorAll('.gcard'));
     var pdots = Array.prototype.slice.call(scroller.querySelectorAll('.pdot'));
+    var gvideos = gcards.map(function(c){ return c.querySelector('video'); });
+    var SLOW_RATE = 0.55; // 高級感を出すためのスロー再生（速度は好みで調整可）
+    gvideos.forEach(function(v){
+      if (!v) return;
+      v.playbackRate = SLOW_RATE;
+      v.addEventListener('loadedmetadata', function(){ v.playbackRate = SLOW_RATE; });
+    });
     var n = gcards.length;
+    var currentIdx = -1;
     var ticking = false;
     function updateGallery(){
       ticking = false;
@@ -901,8 +903,16 @@
       var total = rect.height - window.innerHeight;
       var progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
       var idx = Math.min(n - 1, Math.floor(progress * n));
+      if (idx === currentIdx) return;
+      currentIdx = idx;
       gcards.forEach(function(c, i){ c.classList.toggle('active', i === idx); });
       pdots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+      // 表示中の1本だけ再生し、他は一時停止（スマホでの再生負荷を下げてカクつき・スキップ感を防ぐ）
+      gvideos.forEach(function(v, i){
+        if (!v) return;
+        if (i === idx) { v.playbackRate = SLOW_RATE; v.play().catch(function(){}); }
+        else { v.pause(); }
+      });
     }
     window.addEventListener('scroll', function(){
       if (!ticking) { ticking = true; requestAnimationFrame(updateGallery); }
