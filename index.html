@@ -51,12 +51,6 @@
   /* ---------- reveal-on-scroll ---------- */
   .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease;}
   .reveal.in{opacity:1;transform:translateY(0);}
-  .video-gallery .stagger:nth-child(1){transition-delay:0s;}
-  .video-gallery .stagger:nth-child(2){transition-delay:.12s;}
-  .video-gallery .stagger:nth-child(3){transition-delay:.24s;}
-  .video-gallery .stagger:nth-child(4){transition-delay:.36s;}
-  .video-gallery .stagger:nth-child(5){transition-delay:.48s;}
-  .video-gallery .stagger:nth-child(6){transition-delay:.6s;}
   @media (prefers-reduced-motion: reduce){
     .reveal{opacity:1;transform:none;transition:none;}
     html{scroll-behavior:auto;}
@@ -365,30 +359,51 @@
   .video-band h2{color:var(--navy-900);font-size:clamp(22px,3.4vw,30px);margin-bottom:14px;}
   .video-band p{color:var(--ink-soft);font-size:15px;margin-bottom:0;}
   .video-band .head .btn{margin-top:26px;}
-  .video-gallery{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
-    max-width:820px;margin:0 auto;
+  .gallery-scroller{position:relative;height:calc(100vh + 5*62vh);}
+  .gallery-sticky{
+    position:sticky;top:0;height:100vh;min-height:540px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
   }
-  .video-card{
-    position:relative;border-radius:var(--radius);overflow:hidden;
-    box-shadow:var(--shadow);border:1px solid var(--line);
-    width:100%;aspect-ratio:3/4;background:var(--navy-950);
+  .gallery-stage{position:relative;width:min(76vw,320px);aspect-ratio:3/4;}
+  .gcard{
+    position:absolute;inset:0;border-radius:var(--radius);overflow:hidden;
+    box-shadow:var(--shadow);border:1px solid var(--line);background:var(--navy-950);
+    aspect-ratio:3/4;
+    opacity:0;transform:scale(.92) translateY(14px);
+    transition:opacity .55s ease, transform .55s ease;
+    pointer-events:none;
   }
-  .video-card img, .video-card video{
+  .gcard.active{opacity:1;transform:scale(1) translateY(0);pointer-events:auto;z-index:2;}
+  .gcard img, .gcard video{
     position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
     filter:saturate(.94) contrast(1.02);
   }
-  .video-card .video-tint{
+  .gcard .video-tint{
     position:absolute;inset:0;
     background:linear-gradient(180deg, rgba(10,26,48,0) 58%, rgba(9,20,38,.6) 100%);
     pointer-events:none;
   }
-  .video-card .video-tag{
+  .gcard .video-tag{
     position:absolute;bottom:12px;left:12px;right:12px;z-index:2;
-    display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.04em;
+    display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;letter-spacing:.04em;
     color:#fff;
   }
-  .video-card .video-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--red-600);flex:none;}
+  .gcard .video-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--red-600);flex:none;}
+  .gallery-progress{display:flex;gap:8px;}
+  .gallery-progress .pdot{width:7px;height:7px;border-radius:50%;background:var(--line-blue);transition:background .3s ease, transform .3s ease;}
+  .gallery-progress .pdot.active{background:var(--blue-600);transform:scale(1.35);}
+  .gallery-hint{font-size:12px;color:var(--ink-soft);letter-spacing:.04em;}
+  @media (prefers-reduced-motion: reduce){
+    .gallery-scroller{height:auto;}
+    .gallery-sticky{
+      position:static;height:auto;min-height:0;
+      display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+      max-width:820px;margin:0 auto;
+    }
+    .gallery-stage{display:contents;}
+    .gcard{position:relative;opacity:1;transform:none;width:100%;}
+    .gallery-progress,.gallery-hint{display:none;}
+  }
 
   /* ---------- final cta ---------- */
   .final-cta{
@@ -404,7 +419,10 @@
 
   @media (max-width:760px){
     .persona-grid,.ba-grid,.benefit-strip,.curr-grid,.voice-grid{grid-template-columns:1fr;}
-    .video-gallery{grid-template-columns:repeat(2,1fr);max-width:420px;gap:12px;}
+    .gallery-sticky{gap:14px;}
+    @media (prefers-reduced-motion: reduce){
+      .gallery-sticky{grid-template-columns:repeat(2,1fr);max-width:420px;gap:12px;}
+    }
     .ba-arrow{transform:rotate(90deg);margin:0;}
     .feature{grid-template-columns:48px 1fr;padding:22px 20px;}
     .feature .num{width:44px;height:44px;font-size:19px;}
@@ -603,37 +621,50 @@
       <p>少人数バディー制だからこそ生まれる、手技の"感覚"の共有。実際に登壇・指導する冨永講師の様子をご覧いただけます。当日は、この距離感でお一人おひとりに向き合います。</p>
       <a href="#overview" class="btn btn-cta cta-link">開催概要を見る →</a>
     </div>
-    <div class="video-gallery">
-      <div class="video-card reveal stagger">
+  </div>
+  <div class="gallery-scroller">
+    <div class="gallery-sticky">
+      <div class="gallery-stage">
+      <div class="gcard active" data-index="0">
         <video autoplay loop muted playsinline poster="assets/gallery-lecture-poster.jpg"><source src="assets/gallery-lecture.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
         <span class="video-tag"><span class="dot"></span>座学講義の様子</span>
       </div>
-      <div class="video-card reveal stagger">
+      <div class="gcard" data-index="1">
         <video autoplay loop muted playsinline poster="assets/gallery-treatment-poster.jpg"><source src="assets/gallery-treatment.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
         <span class="video-tag"><span class="dot"></span>実技指導の様子</span>
       </div>
-      <div class="video-card reveal stagger">
+      <div class="gcard" data-index="2">
         <video autoplay loop muted playsinline poster="assets/gallery-closeup-poster.jpg"><source src="assets/gallery-closeup.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
         <span class="video-tag"><span class="dot"></span>手技のクローズアップ</span>
       </div>
-      <div class="video-card reveal stagger">
+      <div class="gcard" data-index="3">
         <video autoplay loop muted playsinline poster="assets/gallery-crowd-poster.jpg"><source src="assets/gallery-crowd.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
         <span class="video-tag"><span class="dot"></span>受講者に囲まれて</span>
       </div>
-      <div class="video-card reveal stagger">
+      <div class="gcard" data-index="4">
         <video autoplay loop muted playsinline poster="assets/gallery-oneonone-poster.jpg"><source src="assets/gallery-oneonone.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
         <span class="video-tag"><span class="dot"></span>マンツーマン指導</span>
       </div>
-      <div class="video-card reveal stagger">
+      <div class="gcard" data-index="5">
         <video autoplay loop muted playsinline poster="assets/gallery-lecture2-poster.jpg"><source src="assets/gallery-lecture2.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
         <span class="video-tag"><span class="dot"></span>座学講義（別アングル）</span>
       </div>
+      </div>
+      <div class="gallery-progress">
+        <span class="pdot active" data-index="0"></span>
+        <span class="pdot" data-index="1"></span>
+        <span class="pdot" data-index="2"></span>
+        <span class="pdot" data-index="3"></span>
+        <span class="pdot" data-index="4"></span>
+        <span class="pdot" data-index="5"></span>
+      </div>
+      <p class="gallery-hint">スクロールして次のシーンへ</p>
     </div>
   </div>
 </section>
@@ -818,4 +849,27 @@
     });
   }, {threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // ---- ギャラリー：スクロール連動で1枚ずつ切り替え ----
+  var scroller = document.querySelector('.gallery-scroller');
+  if (scroller) {
+    var gcards = Array.prototype.slice.call(scroller.querySelectorAll('.gcard'));
+    var pdots = Array.prototype.slice.call(scroller.querySelectorAll('.pdot'));
+    var n = gcards.length;
+    var ticking = false;
+    function updateGallery(){
+      ticking = false;
+      var rect = scroller.getBoundingClientRect();
+      var total = rect.height - window.innerHeight;
+      var progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+      var idx = Math.min(n - 1, Math.floor(progress * n));
+      gcards.forEach(function(c, i){ c.classList.toggle('active', i === idx); });
+      pdots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+    }
+    window.addEventListener('scroll', function(){
+      if (!ticking) { ticking = true; requestAnimationFrame(updateGallery); }
+    }, {passive:true});
+    window.addEventListener('resize', updateGallery);
+    updateGallery();
+  }
 </script>
