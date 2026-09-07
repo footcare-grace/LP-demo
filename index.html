@@ -98,16 +98,7 @@
   .btn-ghost{
     background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.28);
   }
-  .float-cta{
-    position:fixed;right:20px;bottom:20px;z-index:70;
-    box-shadow:0 14px 32px -10px rgba(209,38,63,.6);
-    opacity:0;transform:translateY(14px) scale(.96);pointer-events:none;
-    transition:opacity .35s ease, transform .35s ease;
-  }
-  .float-cta.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
-  @media (max-width:520px){
-    .float-cta{right:14px;bottom:14px;padding:12px 20px;font-size:13px;}
-  }
+
 
   /* ---------- hero ---------- */
   .hero{
@@ -381,58 +372,36 @@
   .video-band h2{color:var(--navy-900);font-size:clamp(22px,3.4vw,30px);margin-bottom:14px;}
   .video-band p{color:var(--ink-soft);font-size:15px;margin-bottom:0;}
   .video-band .head .btn{margin-top:26px;}
-  .gallery-scroller{position:relative;height:calc(100vh + 5*70vh);margin-top:8px;}
-  .gallery-sticky{
-    position:sticky;top:0;height:100vh;min-height:520px;
-    width:100%;overflow:hidden;background:var(--navy-950);
+  .gallery-scroller{
+    position:relative;height:min(86vh,720px);min-height:440px;
+    width:100%;overflow:hidden;background:var(--navy-950);margin-top:8px;
+    border-radius:var(--radius);
   }
   .gcard{
     position:absolute;inset:0;
-    opacity:0;transition:opacity .8s ease;
+    opacity:0;transition:opacity 1s ease;
     pointer-events:none;
   }
   .gcard.active{opacity:1;pointer-events:auto;z-index:2;}
   .gcard img, .gcard video{
     position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
     filter:saturate(.9) contrast(1.03) brightness(.92);
-    transform:scale(1.08);transition:transform 8s ease-out;
+    transform:scale(1.08);transition:transform 3.6s ease-out;
   }
   .gcard.active img, .gcard.active video{transform:scale(1);}
   .gcard .video-tint{
     position:absolute;inset:0;
     background:linear-gradient(180deg, rgba(9,20,38,.05) 0%, rgba(9,20,38,.28) 55%, rgba(9,20,38,.84) 100%);
   }
-  .gcard .video-tag{
-    position:absolute;left:0;right:0;bottom:68px;z-index:2;
-    display:flex;align-items:center;justify-content:center;gap:10px;
-    opacity:0;transform:translateY(18px);
-    transition:opacity .7s ease .2s, transform .7s ease .2s;
-  }
-  .gcard.active .video-tag{opacity:1;transform:translateY(0);}
-  .gcard .video-tag .dot{width:8px;height:8px;border-radius:50%;background:var(--red-600);flex:none;}
-  .gcard .video-tag .cap-title{
-    font-family:var(--serif);font-size:clamp(18px,2.4vw,25px);font-weight:700;letter-spacing:.02em;color:#fff;
-    text-shadow:0 2px 14px rgba(6,14,28,.6);
-  }
   .gallery-progress{
-    position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;
+    position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;
     display:flex;gap:9px;
   }
   .gallery-progress .pdot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.32);transition:background .3s ease, transform .3s ease;}
   .gallery-progress .pdot.active{background:#fff;transform:scale(1.4);}
-  .gallery-hint{
-    position:absolute;left:50%;top:26px;transform:translateX(-50%);z-index:3;
-    font-size:12px;color:rgba(255,255,255,.8);letter-spacing:.06em;
-  }
   @media (prefers-reduced-motion: reduce){
-    .gallery-scroller{height:auto;}
-    .gallery-sticky{
-      position:static;height:auto;min-height:0;overflow:visible;
-      display:flex;flex-direction:column;gap:14px;background:none;
-    }
-    .gcard{position:relative;opacity:1;height:60vh;min-height:320px;border-radius:var(--radius);overflow:hidden;}
-    .gcard .video-tag{opacity:1;transform:none;}
-    .gallery-progress,.gallery-hint{display:none;}
+    .gcard img, .gcard video{transition:none;transform:none;}
+    .gcard{transition:opacity .3s ease;}
   }
 
   /* ---------- final cta ---------- */
@@ -449,8 +418,7 @@
 
   @media (max-width:760px){
     .persona-grid,.ba-grid,.benefit-strip,.curr-grid,.voice-grid{grid-template-columns:1fr;}
-    .gallery-scroller{height:calc(100vh + 5*68vh);}
-    .gcard .video-tag{bottom:44px;}
+    .gallery-scroller{height:min(62vh,520px);min-height:360px;}
     .ba-arrow{transform:rotate(90deg);margin:0;}
     .feature{grid-template-columns:48px 1fr;padding:22px 20px;}
     .feature .num{width:44px;height:44px;font-size:19px;}
@@ -471,9 +439,6 @@
     <a href="#overview" class="btn btn-cta btn-sm cta-link"><span class="long">開催概要を見る</span><span class="short">申込</span> →</a>
   </div>
 </div>
-
-<!-- ============ 追従CTA ============ -->
-<a href="#overview" class="btn btn-cta float-cta cta-link" id="floatCta">開催概要へ →</a>
 
 <!-- ============ HERO ============ -->
 <header class="hero">
@@ -654,7 +619,6 @@
     </div>
   </div>
   <div class="gallery-scroller">
-    <div class="gallery-sticky">
       <div class="gcard active" data-index="0">
         <video autoplay loop muted playsinline poster="assets/gallery-lecture-poster.jpg"><source src="assets/gallery-lecture.mp4" type="video/mp4"></video>
         <div class="video-tint" aria-hidden="true"></div>
@@ -687,7 +651,6 @@
         <span class="pdot" data-index="4"></span>
         <span class="pdot" data-index="5"></span>
       </div>
-    </div>
   </div>
 </section>
 
@@ -872,52 +835,50 @@
   }, {threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
-  // ---- 追従CTAボタン：ヒーローを過ぎたら表示 ----
-  var floatCta = document.getElementById('floatCta');
-  var heroEl = document.querySelector('.hero');
-  if (floatCta && heroEl) {
-    var heroObs = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ floatCta.classList.toggle('show', !e.isIntersecting); });
-    }, {threshold:0});
-    heroObs.observe(heroEl);
-  }
-
-  // ---- ギャラリー：スクロール連動で1枚ずつ切り替え ----
+  // ---- ギャラリー：3秒ごとに自動で次の映像へ（画面内にある間だけ再生） ----
   var scroller = document.querySelector('.gallery-scroller');
   if (scroller) {
     var gcards = Array.prototype.slice.call(scroller.querySelectorAll('.gcard'));
     var pdots = Array.prototype.slice.call(scroller.querySelectorAll('.pdot'));
     var gvideos = gcards.map(function(c){ return c.querySelector('video'); });
-    var SLOW_RATE = 0.55; // 高級感を出すためのスロー再生（速度は好みで調整可）
-    gvideos.forEach(function(v){
-      if (!v) return;
-      v.playbackRate = SLOW_RATE;
-      v.addEventListener('loadedmetadata', function(){ v.playbackRate = SLOW_RATE; });
-    });
     var n = gcards.length;
-    var currentIdx = -1;
-    var ticking = false;
-    function updateGallery(){
-      ticking = false;
-      var rect = scroller.getBoundingClientRect();
-      var total = rect.height - window.innerHeight;
-      var progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
-      var idx = Math.min(n - 1, Math.floor(progress * n));
-      if (idx === currentIdx) return;
-      currentIdx = idx;
-      gcards.forEach(function(c, i){ c.classList.toggle('active', i === idx); });
-      pdots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
-      // 表示中の1本だけ再生し、他は一時停止（スマホでの再生負荷を下げてカクつき・スキップ感を防ぐ）
-      gvideos.forEach(function(v, i){
+    var idx = 0;
+    var timer = null;
+    var SLOW_RATE = 0.55; // 高級感を出すためのスロー再生
+    var INTERVAL_MS = 3000; // 自動切り替えの間隔
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function setActive(i){
+      idx = i;
+      gcards.forEach(function(c, k){ c.classList.toggle('active', k === i); });
+      pdots.forEach(function(d, k){ d.classList.toggle('active', k === i); });
+      gvideos.forEach(function(v, k){
         if (!v) return;
-        if (i === idx) { v.playbackRate = SLOW_RATE; v.play().catch(function(){}); }
-        else { v.pause(); }
+        if (k === i) {
+          v.playbackRate = SLOW_RATE;
+          v.currentTime = 0;
+          v.play().catch(function(){});
+        } else {
+          v.pause();
+        }
       });
     }
-    window.addEventListener('scroll', function(){
-      if (!ticking) { ticking = true; requestAnimationFrame(updateGallery); }
-    }, {passive:true});
-    window.addEventListener('resize', updateGallery);
-    updateGallery();
+    function next(){ setActive((idx + 1) % n); }
+    function start(){
+      if (timer || reduceMotion) return;
+      timer = setInterval(next, INTERVAL_MS);
+    }
+    function stop(){
+      if (timer) { clearInterval(timer); timer = null; }
+      gvideos.forEach(function(v){ if (v) v.pause(); });
+    }
+    var galleryObs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { setActive(idx); start(); }
+        else { stop(); }
+      });
+    }, {threshold:.4});
+    galleryObs.observe(scroller);
+    setActive(0);
   }
 </script>
